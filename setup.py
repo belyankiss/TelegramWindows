@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name="TGWindow",
-    version="0.1.0",
-    description="Библиотека для создания простых сообщений в телеграмм боте.",
+    version="0.0.1",
+    description="Библиотека для создания простых окон в телеграмм боте.",
     long_description=open("README.md").read(),
     long_description_content_type="text/markdown",
     author="PyExecutor",

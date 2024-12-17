@@ -3,6 +3,8 @@ import logging
 from aiogram.types import Message, CallbackQuery, ReplyKeyboardMarkup, InlineKeyboardMarkup, ReplyKeyboardRemove
 from pydantic_core import ValidationError
 
+from src.windows.base_window import BaseWindow
+
 
 class Send:
     def __init__(self, event: Message | CallbackQuery):
@@ -35,9 +37,15 @@ class Send:
 
 
     async def __call__(self,
-                       window,
+                       window: BaseWindow | tuple[str, ReplyKeyboardMarkup | InlineKeyboardMarkup | None] | str,
                        photo: str | None = None):
-        self.text = window[0]
-        self.reply_markup = window[1]
+        if isinstance(window, BaseWindow):
+            self.text, self.reply_markup = window._build()
+        elif isinstance(window, tuple):
+            self.text, self.reply_markup = window
+        elif isinstance(window, str):
+            self.text, self.reply_markup = window, None
+        else:
+            raise TypeError("Unsupported type")
         self.photo = photo
         await self._sender()
